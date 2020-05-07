@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="HUbSpot Regression Suite">
+
+<listeners>
+
+		<!-- <listener class-name="com.qa.hubspot.listeners.TesultsListener" />
+		<listener class-name="com.qa.hubspot.listeners.ExtentReportListener" />
+		<listener class-name="com.qa.hubspot.listeners.TestAllureListener" /> -->
+         <!-- <listener class-name="com.qa.hubspot.listeners.ExtentReportListener" />
+		<listener class-name="com.qa.hubspot.listeners.pdfListener" />
+		<listener class-name="com.qa.hubspot.listeners.TestAllureListener" />-->
+		<listener class-name="com.qa.hubspot.listeners.TesultsListener" />
+
+
+
+	</listeners>
+
+  <test name="Regression" verbose="2">
+    <classes>
+      <class name="com.qa.hubspot.tests.LoginPageTest"/>
+      <!-- <class name="com.qa.hubspot.tests.HomePageTest"/>
+      <class name="com.qa.hubspot.tests.ContactsPageTest"/>-->
+    </classes>
+  </test> 
+</suite> 
