@@ -1,13 +1,15 @@
 package com.qa.hubspot.base;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-
-
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -20,13 +22,21 @@ import org.openqa.selenium.safari.SafariDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
 public class BasePage {
 
-	WebDriver driver;
+	//WebDriver driver;
 
-	Properties prop;
+	public Properties prop;
 
-	ChromeOptions co;
+	public ChromeOptions co;
 	
-	FirefoxOptions fo;
+	public FirefoxOptions fo;
+	
+	public static ThreadLocal <WebDriver> tldriver = new ThreadLocal <WebDriver> ();
+	
+	public static synchronized WebDriver getDriver() {
+		return tldriver.get();
+		
+		
+	}
 
 	/*
 	 * This method will take the browser value from prop() method and will launch
@@ -46,10 +56,12 @@ public class BasePage {
 			
 			co.addArguments("--incognito");
 	
-			driver = new ChromeDriver(co);
+			tldriver.set(new ChromeDriver(co));
+			//driver =new ChromeDriver(co) ;
 			}
 			else {
-				driver = new ChromeDriver();
+				tldriver.set(new ChromeDriver());
+				//driver = new ChromeDriver();
 			}
 
 		} else if (browserName.equalsIgnoreCase("firefox"))
@@ -62,11 +74,13 @@ public class BasePage {
 			if(prop.getProperty("headless").equals("yes"))
 			{
 				fo.addArguments("--headless");
-				driver = new FirefoxDriver(fo);
+				tldriver.set(new FirefoxDriver(fo));
+				//driver = new FirefoxDriver(fo);
 				
 			}
 			else {
-			driver = new FirefoxDriver();
+				tldriver.set(new FirefoxDriver());
+			//driver = new FirefoxDriver();
 			}
 
 		}
@@ -76,7 +90,7 @@ public class BasePage {
 		{
 			WebDriverManager.getInstance(SafariDriver.class).setup();
 
-			driver = new SafariDriver();
+			tldriver.set(new SafariDriver());
 
 		}
 
@@ -85,13 +99,13 @@ public class BasePage {
 			System.out.println("Browser name" + browserName + "has not found");
 		}
 
-		driver.manage().deleteAllCookies();
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		getDriver().manage().deleteAllCookies();
+		getDriver().manage().window().maximize();
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		// driver.get(prop.); URL is being launching from Base class
 
-		return driver;
+		return getDriver();
 
 	}
 
@@ -139,6 +153,23 @@ public class BasePage {
 
 		return prop;
 
+	}
+	
+	public String getScreenShot() {
+		
+		File src=((TakesScreenshot)getDriver()).getScreenshotAs(OutputType.FILE);
+		String path = System.getProperty("user.dir")+"/screenshots/" + System.currentTimeMillis() + ".png";
+        
+		File destination = new File(src,path);
+		
+		try {
+			FileUtils.copyFile(src, destination);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return path;
+		
 	}
 	
 	

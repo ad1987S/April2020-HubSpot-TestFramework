@@ -95,29 +95,29 @@ public class ExtentReportListener extends BasePage implements ITestListener {
 		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
 	}
 
-//	public synchronized void onTestFailure(ITestResult result) {
-//		System.out.println((result.getMethod().getMethodName() + " failed!"));
-//		try {
-//			test.get().fail(result.getThrowable(),
-//					MediaEntityBuilder.createScreenCaptureFromPath(getScreenshot()).build());
-//		} catch (IOException e) {
-//			System.err
-//					.println("Exception thrown while updating test fail status " + Arrays.toString(e.getStackTrace()));
-//		}
-//		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
-//	}
-//
-//	public synchronized void onTestSkipped(ITestResult result) {
-//		System.out.println((result.getMethod().getMethodName() + " skipped!"));
-//		try {
-//			test.get().skip(result.getThrowable(),
-//					MediaEntityBuilder.createScreenCaptureFromPath(getScreenshot()).build());
-//		} catch (IOException e) {
-//			System.err
-//					.println("Exception thrown while updating test skip status " + Arrays.toString(e.getStackTrace()));
-//		}
-//		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
-//	}
+	public synchronized void onTestFailure(ITestResult result) {
+		System.out.println((result.getMethod().getMethodName() + " failed!"));
+		try {
+			test.get().fail(result.getThrowable(),
+					MediaEntityBuilder.createScreenCaptureFromPath(getScreenShot()).build());
+		} catch (IOException e) {
+			System.err
+					.println("Exception thrown while updating test fail status " + Arrays.toString(e.getStackTrace()));
+		}
+		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
+	}
+
+	public synchronized void onTestSkipped(ITestResult result) {
+		System.out.println((result.getMethod().getMethodName() + " skipped!"));
+		try {
+			test.get().skip(result.getThrowable(),
+					MediaEntityBuilder.createScreenCaptureFromPath(getScreenShot()).build());
+		} catch (IOException e) {
+			System.err
+					.println("Exception thrown while updating test skip status " + Arrays.toString(e.getStackTrace()));
+		}
+		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
+	}
 
 	public synchronized void onTestFailedButWithinSuccessPercentage(ITestResult result) {
 		System.out.println(("onTestFailedButWithinSuccessPercentage for " + result.getMethod().getMethodName()));
