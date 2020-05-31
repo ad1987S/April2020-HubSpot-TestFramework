@@ -274,9 +274,8 @@
 
 			<artifactId>testng</artifactId>
 
-			<version>7.1.0</version>
+			<version>6.11</version>
 
-			<scope>test</scope>
 
 		</dependency>
 
